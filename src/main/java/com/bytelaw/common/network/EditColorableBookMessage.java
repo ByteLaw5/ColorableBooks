@@ -75,6 +75,7 @@ public class EditColorableBookMessage {
                 }
             }
         });
+        ctx.get().setPacketHandled(true);
     }
 
     private void replaceBookWithWritten(ServerPlayerEntity player, @Nullable String title, List<String> list, int invIndex) {

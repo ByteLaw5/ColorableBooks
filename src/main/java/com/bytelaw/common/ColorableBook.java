@@ -1,8 +1,9 @@
 package com.bytelaw.common;
 
-import com.bytelaw.client.EditColorableBookScreen;
-import net.minecraft.client.Minecraft;
+import com.bytelaw.common.network.NetworkManager;
+import com.bytelaw.common.network.OpenBookMessage;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.item.WritableBookItem;
@@ -10,6 +11,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.network.PacketDistributor;
 
 public class ColorableBook extends WritableBookItem {
     public ColorableBook(Properties builder) {
@@ -24,9 +26,9 @@ public class ColorableBook extends WritableBookItem {
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
         ItemStack stack = playerIn.getHeldItem(handIn);
-        if(worldIn.isRemote) {
+        if(!worldIn.isRemote) {
             if(stack.getItem() == RegistryList.colorable_book)
-                Minecraft.getInstance().displayGuiScreen(new EditColorableBookScreen(playerIn, stack, handIn));
+                NetworkManager.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity)playerIn), new OpenBookMessage(stack, handIn));
         }
         return ActionResult.resultSuccess(stack);
     }

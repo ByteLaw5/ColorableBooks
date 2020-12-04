@@ -17,5 +17,12 @@ public class NetworkManager {
                 EditColorableBookMessage::decode,
                 EditColorableBookMessage::handle
         );
+        CHANNEL.registerMessage(
+                id++,
+                OpenBookMessage.class,
+                OpenBookMessage::encode,
+                OpenBookMessage::decode,
+                OpenBookMessage::handle
+        );
     }
 }
