@@ -1,0 +1,26 @@
+{
+    "item.colorablebooks.colorable_book": "ספר עם צבע",
+
+    "colorablebooks.obfuscated": "מעורפל",
+    "colorablebooks.black": "שחור",
+    "colorablebooks.dark_blue": "כחול כהה",
+    "colorablebooks.dark_green": "ירוק כהה",
+    "colorablebooks.dark_aqua": "אקווה כהה",
+    "colorablebooks.dark_red": "אדום כהה",
+    "colorablebooks.dark_purple": "סגול כהה",
+    "colorablebooks.gold": "כתום",
+    "colorablebooks.gray": "אפור",
+    "colorablebooks.dark_gray": "אפור כהה",
+    "colorablebooks.blue": "כחול",
+    "colorablebooks.green": "ירוק",
+    "colorablebooks.aqua": "אקווה",
+    "colorablebooks.red": "אדום",
+    "colorablebooks.light_purple": "סגול בהיר",
+    "colorablebooks.yellow": "צהוב",
+    "colorablebooks.white": "לבן",
+    "colorablebooks.bold": "מובלט",
+    "colorablebooks.strikethrough": "קו חוצה",
+    "colorablebooks.underline": "קו תחתון",
+    "colorablebooks.italic": "נטוי",
+    "colorablebooks.reset": "איפוס"
+}

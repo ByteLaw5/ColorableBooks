@@ -1,0 +1,26 @@
+{
+    "item.colorablebooks.colorable_book": "Colorable Book",
+
+    "colorablebooks.obfuscated": "obfuscated",
+    "colorablebooks.black": "black",
+    "colorablebooks.dark_blue": "dark blue",
+    "colorablebooks.dark_green": "dark green",
+    "colorablebooks.dark_aqua": "dark aqua",
+    "colorablebooks.dark_red": "dark red",
+    "colorablebooks.dark_purple": "dark purple",
+    "colorablebooks.gold": "gold",
+    "colorablebooks.gray": "gray",
+    "colorablebooks.dark_gray": "dark gray",
+    "colorablebooks.blue": "blue",
+    "colorablebooks.green": "green",
+    "colorablebooks.aqua": "aqua",
+    "colorablebooks.red": "red",
+    "colorablebooks.light_purple": "light purple",
+    "colorablebooks.yellow": "yellow",
+    "colorablebooks.white": "white",
+    "colorablebooks.bold": "bold",
+    "colorablebooks.strikethrough": "strikethrough",
+    "colorablebooks.underline": "underline",
+    "colorablebooks.italic": "italic",
+    "colorablebooks.reset": "reset"
+}
