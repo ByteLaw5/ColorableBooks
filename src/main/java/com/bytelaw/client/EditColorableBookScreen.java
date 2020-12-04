@@ -5,6 +5,7 @@ import com.bytelaw.common.network.EditColorableBookMessage;
 import com.bytelaw.common.network.NetworkManager;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.gui.screen.EditBookScreen;
+import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.ListNBT;
@@ -21,6 +22,15 @@ import java.util.Locale;
 public class EditColorableBookScreen extends EditBookScreen {
     public EditColorableBookScreen(PlayerEntity player, ItemStack bookIn, Hand handIn) {
         super(player, bookIn, handIn);
+    }
+
+    @Override
+    protected void init() {
+        super.init();
+        addButton(new Button((width + 235) / 2, 240, 98, 20, new TranslationTextComponent("colorablebook." + (ColorableBooksConfig.Client.SHOW_COLOR_LIST.get() ? "hide" : "show")), b -> {
+            ColorableBooksConfig.Client.SHOW_COLOR_LIST.set(!ColorableBooksConfig.Client.SHOW_COLOR_LIST.get());
+            b.setMessage(new TranslationTextComponent("colorablebook." + (ColorableBooksConfig.Client.SHOW_COLOR_LIST.get() ? "hide" : "show")));
+        }));
     }
 
     @Override

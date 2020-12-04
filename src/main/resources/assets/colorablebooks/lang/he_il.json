@@ -22,5 +22,7 @@
     "colorablebooks.strikethrough": "קו חוצה",
     "colorablebooks.underline": "קו תחתון",
     "colorablebooks.italic": "נטוי",
-    "colorablebooks.reset": "איפוס"
+    "colorablebooks.reset": "איפוס",
+    "colorablebooks.show": "הצג",
+    "colorablebooks.hide": "החבא"
 }
