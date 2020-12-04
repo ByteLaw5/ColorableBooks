@@ -8,7 +8,9 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 import javax.annotation.Nonnull;
@@ -19,6 +21,7 @@ public class ColorableBooks {
     public static final String MODID = "colorablebooks";
 
     public ColorableBooks() {
+        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ColorableBooksConfig.CLIENT);
         NetworkManager.registerMessages();
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
         bus.addGenericListener(Item.class, this::registerItem);

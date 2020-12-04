@@ -1,5 +1,6 @@
 package com.bytelaw.client;
 
+import com.bytelaw.ColorableBooksConfig;
 import com.bytelaw.common.network.EditColorableBookMessage;
 import com.bytelaw.common.network.NetworkManager;
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -72,17 +73,18 @@ public class EditColorableBookScreen extends EditBookScreen {
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         super.render(matrixStack, mouseX, mouseY, partialTicks);
-
-        float x = (float)(width + 235) / 2;
-        float y = 14;
-        for(TextFormatting t : TextFormatting.values()) {
-            String s;
-            if(t == TextFormatting.OBFUSCATED)
-                s = "&" + t.toString().charAt(1) + ": " + new TranslationTextComponent("colorablebooks.obfuscated").getString();
-            else
-                s = "&" + t.toString().charAt(1) + ": " + t.toString() + new TranslationTextComponent("colorablebooks." + t.name.toLowerCase(Locale.ROOT)).getString();
-            font.drawString(matrixStack, s, x, y, 0xffffff);
-            y += 10;
+        if(ColorableBooksConfig.Client.SHOW_COLOR_LIST.get()) {
+            float x = (float)(width + 235) / 2;
+            float y = 14;
+            for(TextFormatting t : TextFormatting.values()) {
+                String s;
+                if(t == TextFormatting.OBFUSCATED)
+                    s = "&" + t.toString().charAt(1) + ": " + new TranslationTextComponent("colorablebooks.obfuscated").getString();
+                else
+                    s = "&" + t.toString().charAt(1) + ": " + t.toString() + new TranslationTextComponent("colorablebooks." + t.name.toLowerCase(Locale.ROOT)).getString();
+                font.drawString(matrixStack, s, x, y, 0xffffff);
+                y += 10;
+            }
         }
     }
 }
