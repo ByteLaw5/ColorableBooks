@@ -66,7 +66,9 @@ public class ColoringTableContainer extends Container {
                 @Override
                 public ItemStack onTake(PlayerEntity thePlayer, ItemStack stack) {
                     getSlot(0).putStack(ItemStack.EMPTY);
-                    getSlot(1).putStack(ItemStack.EMPTY);
+                    ItemStack s = getSlot(1).getStack();
+                    s.shrink(1);
+                    getSlot(1).putStack(s);
                     return super.onTake(thePlayer, stack);
                 }
 
@@ -119,10 +121,6 @@ public class ColoringTableContainer extends Container {
                 }
                 result.setTagInfo("pages", newList);
             }
-            getSlot(0).putStack(ItemStack.EMPTY);
-            ItemStack s = getSlot(1).getStack();
-            s.shrink(1);
-            getSlot(1).putStack(s);
             getSlot(2).putStack(result);
         }
     }
