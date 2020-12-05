@@ -7,7 +7,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import net.minecraft.util.text.TextFormatting;
 
-public class ClientHandlers {
+public final class ClientHandlers {
+    private ClientHandlers() throws IllegalAccessException {
+        throw new IllegalAccessException("How dare you instantiate this class?");
+    }
+
     public static void openColorableBookScreen(ItemStack stack, Hand hand) {
         Minecraft.getInstance().displayGuiScreen(new EditColorableBookScreen(Minecraft.getInstance().player, stack, hand));
     }

@@ -27,5 +27,6 @@
     "colorablebooks.show": "הצג",
     "colorablebooks.hide": "החבא",
 
-    "colorablebooks.jei.coloring_table": "שולחן צביעה"
+    "colorablebooks.coloring_table.name": "שולחן צביעה",
+    "colorablebooks.jei.pagetransfer": "הדפים מועתקים מהקלט!"
 }

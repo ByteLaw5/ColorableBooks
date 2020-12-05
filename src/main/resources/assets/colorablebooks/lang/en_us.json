@@ -27,5 +27,6 @@
     "colorablebook.show": "Show",
     "colorablebook.hide": "Hide",
 
-    "colorablebooks.jei.coloring_table": "Coloring Table"
+    "colorablebooks.coloring_table.name": "Coloring Table",
+    "colorablebooks.jei.pagetransfer": "Pages copy over from input!"
 }

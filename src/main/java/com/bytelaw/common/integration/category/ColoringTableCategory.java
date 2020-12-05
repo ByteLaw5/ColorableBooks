@@ -13,6 +13,8 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 
 import java.util.stream.Collectors;
 
@@ -23,9 +25,9 @@ public class ColoringTableCategory implements IRecipeCategory<ColoringTableRecip
     private final String localizedName;
 
     public ColoringTableCategory(IGuiHelper helpers) {
-        this.background = helpers.createDrawable(ColorableBooks.location("textures/coloring_table_jei.png"), 0, 0, 116, 54);
+        this.background = helpers.createDrawable(ColorableBooks.location("textures/jei_textures.png"), 0, 0, 128, 32);
         this.icon = helpers.createDrawableIngredient(new ItemStack(RegistryList.coloring_table));
-        this.localizedName = I18n.format("colorablebooks.jei.coloring_table");
+        this.localizedName = I18n.format("colorablebooks.coloring_table.name");
     }
 
     @Override
@@ -62,9 +64,13 @@ public class ColoringTableCategory implements IRecipeCategory<ColoringTableRecip
     @Override
     public void setRecipe(IRecipeLayout iRecipeLayout, ColoringTableRecipe coloringTableRecipe, IIngredients iIngredients) {
         IGuiItemStackGroup stacks = iRecipeLayout.getItemStacks();
-        stacks.init(0, true, 40, 20);
-        stacks.init(1, true, 70, 20);
-        stacks.init(2, false, 48, 38);
+        stacks.init(0, true, 2, 7);
+        stacks.init(1, true, 51, 7);
+        stacks.init(2, false, 109, 7);
         stacks.set(iIngredients);
+        stacks.addTooltipCallback((slotIndex, input, ingredient, tooltip) -> {
+            if(!input)
+                tooltip.add(new TranslationTextComponent("colorablebooks.jei.pagetransfer").mergeStyle(TextFormatting.GOLD, TextFormatting.BOLD));
+        });
     }
 }

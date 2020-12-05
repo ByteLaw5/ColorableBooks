@@ -30,7 +30,7 @@ public class ColoringTableTile extends TileEntity implements INamedContainerProv
 
     @Override
     public ITextComponent getDisplayName() {
-        return customName == null ? new TranslationTextComponent("coloringbooks.coloring_table.name") : customName;
+        return customName == null ? new TranslationTextComponent("colorablebooks.coloring_table.name") : customName;
     }
 
     public void setCustomName(IFormattableTextComponent component) {

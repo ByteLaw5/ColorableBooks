@@ -1,6 +1,7 @@
 package com.bytelaw.common.integration;
 
 import com.bytelaw.ColorableBooks;
+import com.bytelaw.client.ColoringTableScreen;
 import com.bytelaw.common.integration.category.ColoringTableCategory;
 import com.bytelaw.common.integration.category.ColoringTableRecipe;
 import com.bytelaw.common.registry.ColoringTableContainer;
@@ -15,8 +16,6 @@ import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.ListNBT;
-import net.minecraft.nbt.StringNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.util.Constants;
@@ -48,11 +47,7 @@ public class ColorableBooksJEIPlugin implements IModPlugin {
                 List<ItemStack> inputs = Lists.newArrayList();
                 inputs.add(new ItemStack(i == 0 ? Items.WRITABLE_BOOK : Items.WRITTEN_BOOK));
                 inputs.add(new ItemStack(item));
-                ItemStack output = new ItemStack(RegistryList.colorable_book);
-                ListNBT lore = new ListNBT();
-                lore.add(StringNBT.valueOf("Copies pages from input!"));
-                output.setTagInfo("Lore", lore);
-                recipes.add(new ColoringTableRecipe(inputs, output));
+                recipes.add(new ColoringTableRecipe(inputs, new ItemStack(RegistryList.colorable_book)));
             }
         }
         registration.addRecipes(recipes, coloringTable.getUid());
@@ -61,6 +56,11 @@ public class ColorableBooksJEIPlugin implements IModPlugin {
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
         registration.addRecipeCatalyst(new ItemStack(RegistryList.coloring_table), ColoringTableCategory.COLORING_TABLE);
+    }
+
+    @Override
+    public void registerGuiHandlers(IGuiHandlerRegistration registration) {
+        registration.addRecipeClickArea(ColoringTableScreen.class, 102, 48, 22, 15, ColoringTableCategory.COLORING_TABLE);
     }
 
     @Override

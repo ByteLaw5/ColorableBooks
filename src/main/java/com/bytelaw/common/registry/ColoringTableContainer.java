@@ -33,7 +33,7 @@ public class ColoringTableContainer extends Container {
         this.playerInventory = playerInventory;
         this.pos = pos;
         items().ifPresent(handler -> {
-            addSlot(new SlotItemHandler(handler, 0, 40, 20) {
+            addSlot(new SlotItemHandler(handler, 0, 27, 47) {
                 @Override
                 public void onSlotChanged() {
                     super.onSlotChanged();
@@ -50,7 +50,7 @@ public class ColoringTableContainer extends Container {
                     return 1;
                 }
             });
-            addSlot(new SlotItemHandler(handler, 1, 70, 20) {
+            addSlot(new SlotItemHandler(handler, 1, 76, 47) {
                 @Override
                 public void onSlotChanged() {
                     super.onSlotChanged();
@@ -62,7 +62,7 @@ public class ColoringTableContainer extends Container {
                     return Tags.Items.DYES.contains(stack.getItem());
                 }
             });
-            addSlot(new SlotItemHandler(handler, 2, 48, 38) {
+            addSlot(new SlotItemHandler(handler, 2, 134, 47) {
                 @Override
                 public ItemStack onTake(PlayerEntity thePlayer, ItemStack stack) {
                     getSlot(0).putStack(ItemStack.EMPTY);
@@ -79,17 +79,14 @@ public class ColoringTableContainer extends Container {
             });
         });
 
-        int i = -54;
-        for(int l = 0; l < 3; ++l) {
-            for(int j1 = 0; j1 < 9; ++j1) {
-                System.out.println(j1 + l * 9 + 3);
-                this.addSlot(new Slot(playerInventory, j1 + l * 9 + 3, 8 + j1 * 18, 103 + l * 18 + i));
+        for(int i = 0; i < 3; ++i) {
+            for(int j = 0; j < 9; ++j) {
+                this.addSlot(new Slot(playerInventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
             }
         }
 
-        for(int i1 = 0; i1 < 9; ++i1) {
-            System.out.println(39 + i1);
-            this.addSlot(new Slot(playerInventory, 39 + i1, 8 + i1 * 18, 161 + i));
+        for(int k = 0; k < 9; ++k) {
+            this.addSlot(new Slot(playerInventory, k, 8 + k * 18, 142));
         }
     }
 

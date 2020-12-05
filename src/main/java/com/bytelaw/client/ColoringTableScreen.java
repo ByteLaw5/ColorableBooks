@@ -35,6 +35,7 @@ public class ColoringTableScreen extends ContainerScreen<ColoringTableContainer>
 
     @Override
     protected void drawGuiContainerForegroundLayer(MatrixStack matrixStack, int x, int y) {
-        drawCenteredString(matrixStack, font, title, 62, 10, 14737632);
+        titleX = 74;
+        drawCenteredString(matrixStack, font, title, titleX, titleY, 4210752);
     }
 }
