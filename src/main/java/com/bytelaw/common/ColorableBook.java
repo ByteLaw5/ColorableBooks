@@ -33,4 +33,8 @@ public class ColorableBook extends WritableBookItem {
         }
         return ActionResult.resultSuccess(stack);
     }
+
+    public static void read() {
+
+    }
 }

@@ -13,6 +13,7 @@ import net.minecraft.nbt.StringNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IWorldPosCallable;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
@@ -21,6 +22,15 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
 import javax.annotation.Nonnull;
+import java.util.AbstractList;
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.Set;
+import java.util.function.BiConsumer;
+import java.util.function.BinaryOperator;
+import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.stream.Collector;
 
 public class ColoringTableContainer extends Container {
     private final IWorldPosCallable callable;
@@ -37,7 +47,7 @@ public class ColoringTableContainer extends Container {
                 @Override
                 public void onSlotChanged() {
                     super.onSlotChanged();
-                    ColoringTableContainer.this.onSlotChanged();
+                    ColoringTableContainer.this.onSlotChange();
                 }
 
                 @Override
@@ -54,7 +64,7 @@ public class ColoringTableContainer extends Container {
                 @Override
                 public void onSlotChanged() {
                     super.onSlotChanged();
-                    ColoringTableContainer.this.onSlotChanged();
+                    ColoringTableContainer.this.onSlotChange();
                 }
 
                 @Override
@@ -102,26 +112,6 @@ public class ColoringTableContainer extends Container {
         return getTile().getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
     }
 
-    private void onSlotChanged() {
-        if(getSlot(0).getHasStack() && getSlot(1).getHasStack() && !getSlot(2).getHasStack()) {
-            ItemStack result = new ItemStack(RegistryList.colorable_book);
-            ItemStack book = getSlot(0).getStack();
-            CompoundNBT nbt = book.getTag();
-            result.setTagInfo("pages", nbt.getList("pages", Constants.NBT.TAG_STRING));
-            if(book.getItem() == Items.WRITTEN_BOOK && nbt.contains("colorable", Constants.NBT.TAG_BYTE)) {
-                ListNBT listNBT = nbt.getList("pages", Constants.NBT.TAG_STRING);
-                ListNBT newList = new ListNBT();
-                for(int i = 0; i < listNBT.size(); i++) {
-                    String s = listNBT.getString(i);
-                    s = ClientHandlers.updateFormattingCodesForString(s, false);
-                    newList.add(i, StringNBT.valueOf(s));
-                }
-                result.setTagInfo("pages", newList);
-            }
-            getSlot(2).putStack(result);
-        }
-    }
-
     @Override
     public boolean canInteractWith(PlayerEntity playerIn) {
         return isWithinUsableDistance(callable, playerIn, RegistryList.coloring_table);
@@ -129,6 +119,92 @@ public class ColoringTableContainer extends Container {
 
     @Override
     public ItemStack transferStackInSlot(PlayerEntity playerIn, int index) {
-        return super.transferStackInSlot(playerIn, index);
+        ItemStack itemstack = ItemStack.EMPTY;
+        Slot slot = this.inventorySlots.get(index);
+        if (slot != null && slot.getHasStack()) {
+            ItemStack itemstack1 = slot.getStack();
+            itemstack = itemstack1.copy();
+            if (index == 2) {
+                if (!this.mergeItemStack(itemstack1, 3, 39, true)) {
+                    return ItemStack.EMPTY;
+                }
+
+                slot.onSlotChange(itemstack1, itemstack);
+            } else if (index != 0 && index != 1) {
+                if (index >= 3 && index < 39) {
+                    int i = Tags.Items.DYES.contains(itemstack.getItem()) ? 1 : 0;
+                    if (!this.mergeItemStack(itemstack1, i, 2, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                }
+            } else if (!this.mergeItemStack(itemstack1, 3, 39, false)) {
+                return ItemStack.EMPTY;
+            }
+
+            if (itemstack1.isEmpty()) {
+                slot.putStack(ItemStack.EMPTY);
+            }
+            slot.onSlotChanged();
+
+            if (itemstack1.getCount() == itemstack.getCount()) {
+                return ItemStack.EMPTY;
+            }
+
+            slot.onTake(playerIn, itemstack1);
+        }
+
+        return itemstack;
+    }
+
+    private void onSlotChange() {
+        if(getSlot(0).getHasStack() && getSlot(1).getHasStack() && !getSlot(2).getHasStack()) {
+            ItemStack result = new ItemStack(RegistryList.colorable_book);
+            ItemStack book = getSlot(0).getStack();
+            if(book.hasTag()) {
+                CompoundNBT nbt = book.getTag();
+                if(nbt.contains("pages", Constants.NBT.TAG_LIST)) {
+                    ListNBT listNBTresult = nbt.getList("pages", Constants.NBT.TAG_STRING).copy();
+                    if(book.getItem() == Items.WRITTEN_BOOK && nbt.contains("colorable", Constants.NBT.TAG_BYTE))
+                        listNBTresult = listNBTresult.stream().map(stringnbt -> ITextComponent.Serializer.getComponentFromJson(stringnbt.getString()).getString()).map(string -> ClientHandlers.updateFormattingCodesForString(string, false))
+                                .map(StringNBT::valueOf).collect(toListNBT());
+                    result.setTagInfo("pages", listNBTresult.copy());
+                }
+            }
+            getSlot(2).putStack(result);
+        }
+        if((!getSlot(0).getHasStack() || !getSlot(1).getHasStack()) && getSlot(2).getHasStack())
+            getSlot(2).putStack(ItemStack.EMPTY);
+    }
+
+    private static Collector<StringNBT, ListNBT, ListNBT> toListNBT() {
+        return new Collector<StringNBT, ListNBT, ListNBT>() {
+            @Override
+            public Supplier<ListNBT> supplier() {
+                return ListNBT::new;
+            }
+
+            @Override
+            public BiConsumer<ListNBT, StringNBT> accumulator() {
+                return AbstractList::add;
+            }
+
+            @Override
+            public BinaryOperator<ListNBT> combiner() {
+                return (list1, list2) -> {
+                    list1.addAll(list2);
+                    return list1;
+                };
+            }
+
+            @Override
+            public Function<ListNBT, ListNBT> finisher() {
+                return Function.identity();
+            }
+
+            @Override
+            public Set<Characteristics> characteristics() {
+                return Collections.unmodifiableSet(EnumSet.of(Characteristics.IDENTITY_FINISH));
+            }
+        };
     }
 }

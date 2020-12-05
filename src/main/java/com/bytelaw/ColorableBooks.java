@@ -42,7 +42,7 @@ public class ColorableBooks {
     public ColorableBooks() {
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ColorableBooksConfig.CLIENT);
         NetworkManager.registerMessages();
-        IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+        final IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
         bus.addGenericListener(Item.class, this::registerItem);
         bus.addGenericListener(Block.class, this::registerBlock);
         bus.addGenericListener(TileEntityType.class, this::registerTile);
