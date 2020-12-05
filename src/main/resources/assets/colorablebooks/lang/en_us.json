@@ -1,5 +1,6 @@
 {
     "item.colorablebooks.colorable_book": "Colorable Book",
+    "block.colorablebooks.coloring_table": "Coloring Table",
 
     "colorablebooks.obfuscated": "obfuscated",
     "colorablebooks.black": "black",
@@ -24,5 +25,7 @@
     "colorablebooks.italic": "italic",
     "colorablebooks.reset": "reset",
     "colorablebook.show": "Show",
-    "colorablebook.hide": "Hide"
+    "colorablebook.hide": "Hide",
+
+    "colorablebooks.jei.coloring_table": "Coloring Table"
 }

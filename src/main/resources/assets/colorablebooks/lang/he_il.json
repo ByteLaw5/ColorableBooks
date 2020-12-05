@@ -1,5 +1,6 @@
 {
     "item.colorablebooks.colorable_book": "ספר עם צבע",
+    "block.colorablebooks.coloring_table": "שולחן צביעה",
 
     "colorablebooks.obfuscated": "מעורפל",
     "colorablebooks.black": "שחור",
@@ -24,5 +25,7 @@
     "colorablebooks.italic": "נטוי",
     "colorablebooks.reset": "איפוס",
     "colorablebooks.show": "הצג",
-    "colorablebooks.hide": "החבא"
+    "colorablebooks.hide": "החבא",
+
+    "colorablebooks.jei.coloring_table": "שולחן צביעה"
 }

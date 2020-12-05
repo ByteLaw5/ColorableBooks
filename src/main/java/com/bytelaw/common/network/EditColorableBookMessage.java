@@ -1,7 +1,7 @@
 package com.bytelaw.common.network;
 
 import com.bytelaw.ColorableBooks;
-import com.bytelaw.common.RegistryList;
+import com.bytelaw.common.registry.RegistryList;
 import com.google.common.collect.Lists;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;

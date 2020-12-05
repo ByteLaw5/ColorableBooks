@@ -2,6 +2,7 @@ package com.bytelaw.common;
 
 import com.bytelaw.common.network.NetworkManager;
 import com.bytelaw.common.network.OpenBookMessage;
+import com.bytelaw.common.registry.RegistryList;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;

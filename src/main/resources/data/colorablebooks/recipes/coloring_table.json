@@ -1,0 +1,25 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "!$$",
+        "###",
+        "@ @"
+    ],
+    "key": {
+        "!": {
+            "item": "minecraft:feather"
+        },
+        "$": {
+            "tag": "forge:dyes"
+        },
+        "#": {
+            "tag": "minecraft:wooden_slabs"
+        },
+        "@": {
+            "tag": "minecraft:wooden_fences"
+        }
+    },
+    "result": {
+        "item": "colorablebooks:coloring_table"
+    }
+}

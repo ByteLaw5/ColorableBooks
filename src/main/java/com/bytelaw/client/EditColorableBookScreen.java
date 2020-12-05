@@ -56,28 +56,13 @@ public class EditColorableBookScreen extends EditBookScreen {
     }
 
     private void updateFormattingCodes() {
-        bookTitle = updateFormattingCodesForString(bookTitle);
+        bookTitle = ClientHandlers.updateFormattingCodesForString(bookTitle, true);
         for(int i = 0; i < bookPages.size(); i++) {
             String page = bookPages.get(i);
-            page = updateFormattingCodesForString(page);
+            page = ClientHandlers.updateFormattingCodesForString(page, true);
             bookPages.set(i, page);
         }
         func_238751_C_();
-    }
-
-    private String updateFormattingCodesForString(String string) {
-        char[] chars = new char[string.length()];
-        string.getChars(0, string.length(), chars, 0);
-        for(int j = 0; j < chars.length; j++) {
-            if(chars[j] == '&') {
-                if(j + 1 != chars.length && TextFormatting.fromFormattingCode(chars[j + 1]) != null) {
-                    StringBuilder b = new StringBuilder(string);
-                    b.setCharAt(j, '\u00a7');
-                    string = b.toString();
-                }
-            }
-        }
-        return string;
     }
 
     @Override
