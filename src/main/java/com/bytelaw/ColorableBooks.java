@@ -1,12 +1,8 @@
 package com.bytelaw;
 
 import com.bytelaw.client.ClientHandlers;
-import com.bytelaw.common.*;
 import com.bytelaw.common.network.NetworkManager;
-import com.bytelaw.common.registry.ColoringTableBlock;
-import com.bytelaw.common.registry.ColoringTableContainer;
-import com.bytelaw.common.registry.ColoringTableTile;
-import com.bytelaw.common.registry.RegistryList;
+import com.bytelaw.common.registry.*;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
@@ -63,7 +59,7 @@ public class ColorableBooks {
 
     private void registerBlock(RegistryEvent.Register<Block> event) {
         event.getRegistry().registerAll(
-                new ColoringTableBlock(AbstractBlock.Properties.create(Material.WOOD).setRequiresTool().hardnessAndResistance(2.0F).harvestTool(ToolType.AXE).harvestLevel(1).notSolid()).setRegistryName(location("coloring_table"))
+                new ColoringTableBlock(AbstractBlock.Properties.create(Material.WOOD).hardnessAndResistance(1.65F).harvestTool(ToolType.AXE).notSolid()).setRegistryName(location("coloring_table"))
         );
     }
 

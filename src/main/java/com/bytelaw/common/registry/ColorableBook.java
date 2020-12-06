@@ -1,8 +1,7 @@
-package com.bytelaw.common;
+package com.bytelaw.common.registry;
 
 import com.bytelaw.common.network.NetworkManager;
 import com.bytelaw.common.network.OpenBookMessage;
-import com.bytelaw.common.registry.RegistryList;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -32,9 +31,5 @@ public class ColorableBook extends WritableBookItem {
                 NetworkManager.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity)playerIn), new OpenBookMessage(stack, handIn));
         }
         return ActionResult.resultSuccess(stack);
-    }
-
-    public static void read() {
-
     }
 }

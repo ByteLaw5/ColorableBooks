@@ -60,8 +60,9 @@ public class EditColorableBookMessage {
                 CompoundNBT compoundnbt = book.getTag();
                 if(WritableBookItem.isNBTValid(compoundnbt)) {
                     List<String> list = Lists.newArrayList();
+                    String title = null;
                     if(updateAll)
-                        list.add(compoundnbt.getString("title"));
+                        title = compoundnbt.getString("title");
 
                     ListNBT listnbt = compoundnbt.getList("pages", Constants.NBT.TAG_STRING);
 
@@ -70,7 +71,7 @@ public class EditColorableBookMessage {
                     }
 
                     if(PlayerInventory.isHotbar(inventoryIndex) || inventoryIndex == 40) {
-                        replaceBookWithWritten(ctx.get().getSender(), updateAll ? list.get(0) : null, updateAll ? list.subList(1, list.size()) : list, inventoryIndex);
+                        replaceBookWithWritten(ctx.get().getSender(), title, list, inventoryIndex);
                     }
                 }
             }

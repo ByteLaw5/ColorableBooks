@@ -1,6 +1,5 @@
 package com.bytelaw.common.registry;
 
-import com.bytelaw.common.ColorableBook;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.tileentity.TileEntityType;

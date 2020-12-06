@@ -1,6 +1,6 @@
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-package com.bytelaw.common;
+package com.bytelaw.common.registry;
 
 import mcp.MethodsReturnNonnullByDefault;
 
