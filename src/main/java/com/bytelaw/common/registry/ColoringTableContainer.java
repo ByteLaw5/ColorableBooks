@@ -157,8 +157,8 @@ public class ColoringTableContainer extends Container {
     }
 
     private void onSlotChange() {
-        if(getSlot(0).getHasStack() && getSlot(1).getHasStack() && !getSlot(2).getHasStack()) {
-            ItemStack result = new ItemStack(RegistryList.colorable_book);
+        if(getSlot(0).getHasStack()) {
+            ItemStack result = new ItemStack(getSlot(1).getHasStack() ? RegistryList.colorable_book : Items.WRITABLE_BOOK);
             ItemStack book = getSlot(0).getStack();
             if(book.hasTag()) {
                 CompoundNBT nbt = book.getTag();
@@ -167,7 +167,7 @@ public class ColoringTableContainer extends Container {
                     if(book.getItem() == Items.WRITTEN_BOOK)
                         if(nbt.contains("colorable", Constants.NBT.TAG_BYTE))
                             listNBTresult = listNBTresult.stream().map(stringnbt -> ITextComponent.Serializer.getComponentFromJson(stringnbt.getString()).getString()).map(string -> ClientHandlers.updateFormattingCodesForString(string, false))
-                                .map(StringNBT::valueOf).collect(toListNBT());
+                                    .map(StringNBT::valueOf).collect(toListNBT());
                         else
                             listNBTresult = listNBTresult.stream().map(stringnbt -> ITextComponent.Serializer.getComponentFromJson(stringnbt.getString()).getString())
                                     .map(StringNBT::valueOf).collect(toListNBT());
@@ -176,7 +176,7 @@ public class ColoringTableContainer extends Container {
             }
             getSlot(2).putStack(result);
         }
-        if((!getSlot(0).getHasStack() || !getSlot(1).getHasStack()) && getSlot(2).getHasStack())
+        if((!getSlot(0).getHasStack()) && getSlot(2).getHasStack())
             getSlot(2).putStack(ItemStack.EMPTY);
     }
 

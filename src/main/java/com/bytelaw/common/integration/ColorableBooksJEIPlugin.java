@@ -44,10 +44,12 @@ public class ColorableBooksJEIPlugin implements IModPlugin {
         List<ColoringTableRecipe> recipes = Lists.newArrayList();
         for(Item item : Tags.Items.DYES.getAllElements()) {
             for(int i = 0; i < 2; i++) {
-                List<ItemStack> inputs = Lists.newArrayList();
-                inputs.add(new ItemStack(i == 0 ? Items.WRITABLE_BOOK : Items.WRITTEN_BOOK));
-                inputs.add(new ItemStack(item));
-                recipes.add(new ColoringTableRecipe(inputs, new ItemStack(RegistryList.colorable_book)));
+                for(int j = 0; j < 2; j++) {
+                    List<ItemStack> inputs = Lists.newArrayList();
+                    inputs.add(new ItemStack(i == 0 ? Items.WRITABLE_BOOK : Items.WRITTEN_BOOK));
+                    inputs.add(j == 0 ? new ItemStack(item) : ItemStack.EMPTY);
+                    recipes.add(new ColoringTableRecipe(inputs, new ItemStack(j == 0 ? RegistryList.colorable_book : Items.WRITABLE_BOOK)));
+                }
             }
         }
         registration.addRecipes(recipes, coloringTable.getUid());

@@ -1,6 +1,7 @@
 {
     "textures": {
-        "oak_planks": "minecraft:block/oak_planks"
+        "oak_planks": "minecraft:block/oak_planks",
+        "particle": "#oak_planks"
     },
     "display": {
         "gui": {
