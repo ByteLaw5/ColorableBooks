@@ -43,9 +43,9 @@ public class ColoringTableBlock extends Block {
         TileEntity te = worldIn.getTileEntity(pos);
         if(!worldIn.isRemote && te instanceof ColoringTableTile) {
             NetworkHooks.openGui((ServerPlayerEntity)player, (INamedContainerProvider)te, pos);
-            return ActionResultType.SUCCESS;
+            return ActionResultType.CONSUME;
         }
-        return ActionResultType.PASS;
+        return ActionResultType.SUCCESS;
     }
 
     @Nullable
