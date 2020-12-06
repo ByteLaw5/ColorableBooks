@@ -164,9 +164,13 @@ public class ColoringTableContainer extends Container {
                 CompoundNBT nbt = book.getTag();
                 if(nbt.contains("pages", Constants.NBT.TAG_LIST)) {
                     ListNBT listNBTresult = nbt.getList("pages", Constants.NBT.TAG_STRING).copy();
-                    if(book.getItem() == Items.WRITTEN_BOOK && nbt.contains("colorable", Constants.NBT.TAG_BYTE))
-                        listNBTresult = listNBTresult.stream().map(stringnbt -> ITextComponent.Serializer.getComponentFromJson(stringnbt.getString()).getString()).map(string -> ClientHandlers.updateFormattingCodesForString(string, false))
+                    if(book.getItem() == Items.WRITTEN_BOOK)
+                        if(nbt.contains("colorable", Constants.NBT.TAG_BYTE))
+                            listNBTresult = listNBTresult.stream().map(stringnbt -> ITextComponent.Serializer.getComponentFromJson(stringnbt.getString()).getString()).map(string -> ClientHandlers.updateFormattingCodesForString(string, false))
                                 .map(StringNBT::valueOf).collect(toListNBT());
+                        else
+                            listNBTresult = listNBTresult.stream().map(stringnbt -> ITextComponent.Serializer.getComponentFromJson(stringnbt.getString()).getString())
+                                    .map(StringNBT::valueOf).collect(toListNBT());
                     result.setTagInfo("pages", listNBTresult.copy());
                 }
             }

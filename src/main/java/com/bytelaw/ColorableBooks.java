@@ -63,7 +63,7 @@ public class ColorableBooks {
 
     private void registerBlock(RegistryEvent.Register<Block> event) {
         event.getRegistry().registerAll(
-                new ColoringTableBlock(AbstractBlock.Properties.create(Material.WOOD).setRequiresTool().hardnessAndResistance(2.0F).harvestTool(ToolType.AXE).harvestLevel(1)).setRegistryName(location("coloring_table"))
+                new ColoringTableBlock(AbstractBlock.Properties.create(Material.WOOD).setRequiresTool().hardnessAndResistance(2.0F).harvestTool(ToolType.AXE).harvestLevel(1).notSolid()).setRegistryName(location("coloring_table"))
         );
     }
 
@@ -80,7 +80,6 @@ public class ColorableBooks {
                     return new ColoringTableContainer(id, inv, pos, IWorldPosCallable.of(inv.player.world, pos));
                 }).setRegistryName(location("coloring_table"))
         );
-        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> ClientHandlers::registerScreens);
     }
 
     @Nonnull
