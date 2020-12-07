@@ -1,6 +1,7 @@
 {
     "textures": {
         "oak_planks": "minecraft:block/oak_planks",
+        "top": "colorablebooks:block/coloring_table_top",
         "particle": "#oak_planks"
     },
     "display": {
@@ -57,7 +58,7 @@
                 "east": { "texture": "#oak_planks", "uv": [ 0, 0, 16, 2 ] },
                 "south": { "texture": "#oak_planks", "uv": [ 0, 0, 16, 2 ] },
                 "west": { "texture": "#oak_planks", "uv": [ 0, 0, 16, 2 ] },
-                "up": { "texture": "#oak_planks", "uv": [ 0, 0, 16, 16 ] },
+                "up": { "texture": "#top", "uv": [ 0, 0, 16, 16 ] },
                 "down": { "texture": "#oak_planks", "uv": [ 0, 0, 16, 16 ] }
             }
         },
