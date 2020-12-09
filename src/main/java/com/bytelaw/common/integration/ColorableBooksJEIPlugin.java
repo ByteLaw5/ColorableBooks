@@ -45,7 +45,6 @@ public class ColorableBooksJEIPlugin implements IModPlugin {
                 recipes.add(new ColoringTableRecipe(new ItemStack(i == 0 ? Items.WRITABLE_BOOK : Items.WRITTEN_BOOK), new ItemStack(j == 0 ? RegistryList.colorable_book : Items.WRITABLE_BOOK), j == 0 ? 10 : 0));
             }
         }
-        recipes.stream().mapToInt(ColoringTableRecipe::getRequiredColor).forEachOrdered(System.out::println);
         registration.addRecipes(recipes, coloringTable.getUid());
     }
 
