@@ -8,6 +8,7 @@ import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 
 public class ColoringTableScreen extends ContainerScreen<ColoringTableContainer> {
     private static final ResourceLocation TEXTURES = ColorableBooks.location("textures/coloring_table.png");
@@ -21,6 +22,9 @@ public class ColoringTableScreen extends ContainerScreen<ColoringTableContainer>
         renderBackground(matrixStack);
         super.render(matrixStack, mouseX, mouseY, partialTicks);
         renderHoveredTooltip(matrixStack, mouseX, mouseY);
+        if(mouseX >= 18 + guiLeft && mouseX <= 87 + guiLeft)
+            if(mouseY >= 37 + guiTop && mouseY <= 41 + guiTop)
+                renderTooltip(matrixStack, new StringTextComponent(container.getColor() + " / 100"), mouseX, mouseY);
     }
 
     @Override
@@ -28,9 +32,11 @@ public class ColoringTableScreen extends ContainerScreen<ColoringTableContainer>
     protected void drawGuiContainerBackgroundLayer(MatrixStack matrixStack, float partialTicks, int x, int y) {
         RenderSystem.color4f(1, 1, 1, 1);
         minecraft.getTextureManager().bindTexture(TEXTURES);
-        int i = (this.width - this.xSize) / 2;
-        int j = (this.height - this.ySize) / 2;
+        int i = guiLeft;
+        int j = guiTop;
         blit(matrixStack, i, j, 0, 0, xSize, ySize);
+        int l = container.getColor();
+        blit(matrixStack, i + 19, j + 38, 176, 0, l * 68 / 100, 3);
     }
 
     @Override

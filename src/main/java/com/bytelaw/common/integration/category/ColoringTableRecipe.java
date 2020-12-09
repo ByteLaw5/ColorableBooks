@@ -5,19 +5,25 @@ import net.minecraft.item.ItemStack;
 import java.util.List;
 
 public class ColoringTableRecipe {
-    private final List<ItemStack> inputs;
+    private final ItemStack input;
     private final ItemStack output;
+    private final int requiredColor;
 
-    public ColoringTableRecipe(List<ItemStack> inputs, ItemStack output) {
-        this.inputs = inputs;
+    public ColoringTableRecipe(ItemStack input, ItemStack output, int requiredColor) {
+        this.input = input;
         this.output = output;
+        this.requiredColor = requiredColor;
+    }
+
+    public ItemStack getInput() {
+        return input;
     }
 
     public ItemStack getOutput() {
         return output;
     }
 
-    public List<ItemStack> getInputs() {
-        return inputs;
+    public int getRequiredColor() {
+        return requiredColor;
     }
 }

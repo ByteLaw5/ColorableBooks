@@ -1,5 +1,6 @@
 package com.bytelaw.common.registry;
 
+import com.bytelaw.client.ClientHandlers;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -21,6 +22,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class ColoringTableTile extends TileEntity implements INamedContainerProvider {
+    private int color = 0;
     private final LazyOptional<ItemStackHandler> handler = LazyOptional.of(this::createItems);
     private IFormattableTextComponent customName;
 
@@ -30,7 +32,11 @@ public class ColoringTableTile extends TileEntity implements INamedContainerProv
 
     @Override
     public ITextComponent getDisplayName() {
-        return customName == null ? new TranslationTextComponent("colorablebooks.coloring_table.name") : customName;
+        return !hasCustomName() ? new TranslationTextComponent("colorablebooks.coloring_table.name") : customName;
+    }
+
+    public boolean hasCustomName() {
+        return customName != null;
     }
 
     public void setCustomName(IFormattableTextComponent component) {
@@ -48,17 +54,29 @@ public class ColoringTableTile extends TileEntity implements INamedContainerProv
     public void read(BlockState state, CompoundNBT nbt) {
         super.read(state, nbt);
         handler.ifPresent(h -> h.deserializeNBT(nbt.getCompound("Inventory")));
-        if(nbt.contains("CustomName", Constants.NBT.TAG_STRING))
+        readLight(nbt);
+        if(nbt.contains("CustomName", Constants.NBT.TAG_STRING)) {
             customName = ITextComponent.Serializer.getComponentFromJson(nbt.getString("CustomName"));
+        }
+    }
+
+    public void readLight(CompoundNBT nbt) {
+        setColor(nbt.getInt("Color"));
     }
 
     @Override
     public CompoundNBT write(final CompoundNBT nbt) {
         super.write(nbt);
         handler.ifPresent(h -> nbt.put("Inventory", h.serializeNBT()));
-        if(customName != null)
+        writeLight(nbt);
+        if(hasCustomName()) {
             nbt.putString("CustomName", ITextComponent.Serializer.toJson(customName));
+        }
         return nbt;
+    }
+
+    public void writeLight(CompoundNBT nbt) {
+        nbt.putInt("Color", getColor());
     }
 
     private ItemStackHandler createItems() {
@@ -79,8 +97,22 @@ public class ColoringTableTile extends TileEntity implements INamedContainerProv
     }
 
     @Override
-    public void remove() {
-        super.remove();
+    protected void invalidateCaps() {
+        super.invalidateCaps();
         handler.invalidate();
+    }
+
+    public void setColor(int color) {
+        this.color = color;
+        markDirty();
+    }
+
+    public int getColor() {
+        return color;
+    }
+
+    public void spawnColorParticles() {
+        if(world.isRemote)
+            ClientHandlers.spawnColorParticles(getPos());
     }
 }

@@ -10,6 +10,9 @@ import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.loot.LootContext;
+import net.minecraft.loot.LootParameters;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
@@ -22,10 +25,12 @@ import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nullable;
+import java.util.List;
 
 @SuppressWarnings("deprecation")
 public class ColoringTableBlock extends Block {
@@ -56,10 +61,17 @@ public class ColoringTableBlock extends Block {
 
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
-        if(stack.hasDisplayName()) {
+        if(!worldIn.isRemote) {
             TileEntity te = worldIn.getTileEntity(pos);
-            if(te instanceof ColoringTableTile)
-                ((ColoringTableTile)te).setCustomName((IFormattableTextComponent)stack.getDisplayName());
+            if(te instanceof ColoringTableTile) {
+                ColoringTableTile coloringTable = (ColoringTableTile)te;
+                if(stack.hasTag() && stack.getTag().contains("TileInfo", Constants.NBT.TAG_COMPOUND)) {
+                    CompoundNBT tileInfo = stack.getTag().getCompound("TileInfo");
+                    coloringTable.readLight(tileInfo);
+                }
+                if(stack.hasDisplayName())
+                    coloringTable.setCustomName((IFormattableTextComponent)stack.getDisplayName());
+            }
         }
     }
 
@@ -102,6 +114,23 @@ public class ColoringTableBlock extends Block {
             }
         }
         super.onReplaced(state, worldIn, pos, newState, isMoving);
+    }
+
+    @Override
+    public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
+        List<ItemStack> stacks = super.getDrops(state, builder);
+        ItemStack stack = stacks.get(0).copy();
+        TileEntity te = builder.assertPresent(LootParameters.BLOCK_ENTITY);
+        if(te instanceof ColoringTableTile) {
+            ColoringTableTile coloringTable = (ColoringTableTile)te;
+            CompoundNBT teData = new CompoundNBT();
+            coloringTable.writeLight(teData);
+            stack.setTagInfo("TileInfo", teData);
+            if(coloringTable.hasCustomName())
+                stack.setDisplayName(coloringTable.getDisplayName());
+        }
+        stacks.set(0, stack);
+        return stacks;
     }
 
     @Override

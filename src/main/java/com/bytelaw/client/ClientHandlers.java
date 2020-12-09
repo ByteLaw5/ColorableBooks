@@ -3,9 +3,14 @@ package com.bytelaw.client;
 import com.bytelaw.common.registry.RegistryList;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
+import net.minecraft.client.particle.Particle;
 import net.minecraft.item.ItemStack;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.Hand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
+
+import java.util.Random;
 
 public final class ClientHandlers {
     private ClientHandlers() throws IllegalAccessException {
@@ -33,5 +38,16 @@ public final class ClientHandlers {
             }
         }
         return string;
+    }
+
+    public static void spawnColorParticles(BlockPos pos) {
+        Random rand = new Random();
+        for(int i = 0; i < 10; i++) {
+            float r = rand.nextFloat() / 2f + 0.5f;
+            float g = rand.nextFloat() / 2f + 0.5f;
+            float b = rand.nextFloat() / 2f + 0.5f;
+            Particle particle = Minecraft.getInstance().particles.addParticle(ParticleTypes.EFFECT, pos.getX() + 0.5D, pos.getY() + 0.75D, pos.getZ() + 0.5D, rand.nextGaussian() * 0.25F, rand.nextGaussian() * 0.75F, rand.nextGaussian() * 0.25F);
+            particle.setColor(r, g, b);
+        }
     }
 }

@@ -12,7 +12,9 @@ import net.minecraft.nbt.ListNBT;
 import net.minecraft.nbt.StringNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IWorldPosCallable;
+import net.minecraft.util.IntReferenceHolder;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.util.Constants;
@@ -42,6 +44,17 @@ public class ColoringTableContainer extends Container {
         this.callable = callable;
         this.playerInventory = playerInventory;
         this.pos = pos;
+        trackInt(new IntReferenceHolder() {
+            @Override
+            public int get() {
+                return getColor();
+            }
+
+            @Override
+            public void set(int value) {
+                getTile().setColor(value);
+            }
+        });
         items().ifPresent(handler -> {
             addSlot(new SlotItemHandler(handler, 0, 27, 47) {
                 @Override
@@ -59,17 +72,30 @@ public class ColoringTableContainer extends Container {
                 public int getSlotStackLimit() {
                     return 1;
                 }
+
+                @Override
+                public int getItemStackLimit(@Nonnull ItemStack stack) {
+                    return getSlotStackLimit();
+                }
             });
-            addSlot(new SlotItemHandler(handler, 1, 76, 47) {
+            addSlot(new SlotItemHandler(handler, 1, 19, 18) {
                 @Override
                 public void onSlotChanged() {
                     super.onSlotChanged();
-                    ColoringTableContainer.this.onSlotChange();
+                    if(getHasStack()) {
+                        addColor();
+                        getStack().shrink(1);
+                    }
                 }
 
                 @Override
                 public boolean isItemValid(@Nonnull ItemStack stack) {
                     return Tags.Items.DYES.contains(stack.getItem());
+                }
+
+                @Override
+                public int getSlotStackLimit() {
+                    return 1;
                 }
             });
             addSlot(new SlotItemHandler(handler, 2, 134, 47) {
@@ -79,6 +105,8 @@ public class ColoringTableContainer extends Container {
                     ItemStack s = getSlot(1).getStack();
                     s.shrink(1);
                     getSlot(1).putStack(s);
+                    getTile().setColor(MathHelper.clamp(getColor() - 10, 0, 100));
+                    getTile().spawnColorParticles();
                     return super.onTake(thePlayer, stack);
                 }
 
@@ -156,9 +184,98 @@ public class ColoringTableContainer extends Container {
         return itemstack;
     }
 
+    /*
+    Pays attention to slot stack limits.
+     */
+    @Override
+    protected boolean mergeItemStack(ItemStack stack, int startIndex, int endIndex, boolean reverseDirection) {
+        boolean flag = false;
+        int i = startIndex;
+        if (reverseDirection) {
+            i = endIndex - 1;
+        }
+
+        if (stack.isStackable()) {
+            while(!stack.isEmpty()) {
+                if (reverseDirection) {
+                    if (i < startIndex) {
+                        break;
+                    }
+                } else if (i >= endIndex) {
+                    break;
+                }
+
+                Slot slot = this.inventorySlots.get(i);
+                ItemStack itemstack = slot.getStack();
+                if (!itemstack.isEmpty() && areItemsAndTagsEqual(stack, itemstack)) {
+                    int j = itemstack.getCount() + stack.getCount();
+                    int maxSize = Math.min(slot.getItemStackLimit(itemstack), Math.min(slot.getSlotStackLimit(), stack.getMaxStackSize()));
+                    if (j <= maxSize) {
+                        stack.setCount(0);
+                        itemstack.setCount(j);
+                        slot.onSlotChanged();
+                        flag = true;
+                    } else if (itemstack.getCount() < maxSize) {
+                        stack.shrink(maxSize - itemstack.getCount());
+                        itemstack.setCount(maxSize);
+                        slot.onSlotChanged();
+                        flag = true;
+                    }
+                }
+
+                if (reverseDirection) {
+                    --i;
+                } else {
+                    ++i;
+                }
+            }
+        }
+
+        if (!stack.isEmpty()) {
+            if (reverseDirection) {
+                i = endIndex - 1;
+            } else {
+                i = startIndex;
+            }
+
+            while(true) {
+                if (reverseDirection) {
+                    if (i < startIndex) {
+                        break;
+                    }
+                } else if (i >= endIndex) {
+                    break;
+                }
+
+                Slot slot1 = this.inventorySlots.get(i);
+                ItemStack itemstack1 = slot1.getStack();
+                if (itemstack1.isEmpty() && slot1.isItemValid(stack)) {
+                    int limit = Math.min(slot1.getSlotStackLimit(), slot1.getItemStackLimit(stack));
+                    if (stack.getCount() > limit) {
+                        slot1.putStack(stack.split(limit));
+                    } else {
+                        slot1.putStack(stack.split(stack.getCount()));
+                    }
+
+                    slot1.onSlotChanged();
+                    flag = true;
+                    break;
+                }
+
+                if (reverseDirection) {
+                    --i;
+                } else {
+                    ++i;
+                }
+            }
+        }
+
+        return flag;
+    }
+
     private void onSlotChange() {
         if(getSlot(0).getHasStack()) {
-            ItemStack result = new ItemStack(getSlot(1).getHasStack() ? RegistryList.colorable_book : Items.WRITABLE_BOOK);
+            ItemStack result = new ItemStack(getColor() >= 10 ? RegistryList.colorable_book : Items.WRITABLE_BOOK);
             ItemStack book = getSlot(0).getStack();
             if(book.hasTag()) {
                 CompoundNBT nbt = book.getTag();
@@ -178,6 +295,14 @@ public class ColoringTableContainer extends Container {
         }
         if((!getSlot(0).getHasStack()) && getSlot(2).getHasStack())
             getSlot(2).putStack(ItemStack.EMPTY);
+    }
+
+    private void addColor() {
+        int toAdd = 10;
+        if(getColor() < 100) {
+            getTile().setColor(toAdd + getColor());
+            onSlotChange();
+        }
     }
 
     private static Collector<StringNBT, ListNBT, ListNBT> toListNBT() {
@@ -210,5 +335,9 @@ public class ColoringTableContainer extends Container {
                 return Collections.unmodifiableSet(EnumSet.of(Characteristics.IDENTITY_FINISH));
             }
         };
+    }
+
+    public int getColor() {
+        return getTile().getColor();
     }
 }
