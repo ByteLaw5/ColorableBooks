@@ -1,6 +1,6 @@
 package com.bytelaw.common.registry;
 
-import com.bytelaw.client.ClientHandlers;
+import com.bytelaw.common.ClientHandlers;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -113,6 +113,6 @@ public class ColoringTableTile extends TileEntity implements INamedContainerProv
 
     public void spawnColorParticles() {
         if(world.isRemote)
-            ClientHandlers.spawnColorParticles(getPos());
+            ClientHandlers.spawnColorParticles(getPos(), getColor() / 10);
     }
 }

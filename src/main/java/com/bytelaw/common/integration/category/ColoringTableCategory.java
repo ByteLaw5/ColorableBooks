@@ -36,7 +36,7 @@ public class ColoringTableCategory implements IRecipeCategory<ColoringTableRecip
         this.cachedColors = CacheBuilder.newBuilder().maximumSize(2L).build(new CacheLoader<Integer, IDrawable>() {
             @Override
             public IDrawable load(Integer key) {
-                return helpers.drawableBuilder(loc, 128, 0, key * 68 / 100, 3).build();
+                return helpers.createDrawable(loc, 128, 0, key * 68 / 100, 3);
             }
         });
     }
@@ -84,13 +84,9 @@ public class ColoringTableCategory implements IRecipeCategory<ColoringTableRecip
         });
     }
 
-    private IDrawable getRequiredColorForRecipe(ColoringTableRecipe recipe) {
-        return cachedColors.getUnchecked(recipe.getRequiredColor());
-    }
-
     @Override
     public void draw(ColoringTableRecipe recipe, MatrixStack matrixStack, double mouseX, double mouseY) {
-        IDrawable color = getRequiredColorForRecipe(recipe);
+        IDrawable color = cachedColors.getUnchecked(recipe.getRequiredColor());
         color.draw(matrixStack, 2, 2);
         FontRenderer font = Minecraft.getInstance().fontRenderer;
         font.drawString(matrixStack, recipe.getRequiredColor() + " / 100", 76, 0, 16777215);

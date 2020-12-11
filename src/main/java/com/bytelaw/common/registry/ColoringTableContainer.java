@@ -1,6 +1,6 @@
 package com.bytelaw.common.registry;
 
-import com.bytelaw.client.ClientHandlers;
+import com.bytelaw.common.ClientHandlers;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
@@ -105,8 +105,8 @@ public class ColoringTableContainer extends Container {
                     ItemStack s = getSlot(1).getStack();
                     s.shrink(1);
                     getSlot(1).putStack(s);
-                    getTile().setColor(MathHelper.clamp(getColor() - 10, 0, 100));
                     getTile().spawnColorParticles();
+                    getTile().setColor(MathHelper.clamp(getColor() - 10, 0, 100));
                     return super.onTake(thePlayer, stack);
                 }
 
@@ -210,15 +210,8 @@ public class ColoringTableContainer extends Container {
                 if (!itemstack.isEmpty() && areItemsAndTagsEqual(stack, itemstack)) {
                     int j = itemstack.getCount() + stack.getCount();
                     int maxSize = Math.min(slot.getItemStackLimit(itemstack), Math.min(slot.getSlotStackLimit(), stack.getMaxStackSize()));
-                    if (j <= maxSize) {
-                        stack.setCount(0);
-                        itemstack.setCount(j);
-                        slot.onSlotChanged();
-                        flag = true;
-                    } else if (itemstack.getCount() < maxSize) {
-                        stack.shrink(maxSize - itemstack.getCount());
-                        itemstack.setCount(maxSize);
-                        slot.onSlotChanged();
+                    if(j > maxSize) {
+                        slot.putStack(stack.split(maxSize));
                         flag = true;
                     }
                 }

@@ -1,6 +1,6 @@
 package com.bytelaw.common.network;
 
-import com.bytelaw.client.ClientHandlers;
+import com.bytelaw.common.ClientHandlers;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.Hand;

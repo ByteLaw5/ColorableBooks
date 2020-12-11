@@ -1,5 +1,7 @@
-package com.bytelaw.client;
+package com.bytelaw.common;
 
+import com.bytelaw.client.ColoringTableScreen;
+import com.bytelaw.client.EditColorableBookScreen;
 import com.bytelaw.common.registry.RegistryList;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
@@ -40,14 +42,15 @@ public final class ClientHandlers {
         return string;
     }
 
-    public static void spawnColorParticles(BlockPos pos) {
+    public static void spawnColorParticles(BlockPos pos, int multiplier) {
         Random rand = new Random();
-        for(int i = 0; i < 10; i++) {
-            float r = rand.nextFloat() / 2f + 0.5f;
-            float g = rand.nextFloat() / 2f + 0.5f;
-            float b = rand.nextFloat() / 2f + 0.5f;
+        for(int i = 0; i < (10 * multiplier); i++) {
+            float r = rand.nextFloat() * 2.F / (rand.nextFloat() * 1.25F);
+            float g = rand.nextFloat() * 2.F / (rand.nextFloat() * 1.25F);
+            float b = rand.nextFloat() * 2.F / (rand.nextFloat() * 1.25F);
             Particle particle = Minecraft.getInstance().particles.addParticle(ParticleTypes.EFFECT, pos.getX() + 0.5D, pos.getY() + 0.75D, pos.getZ() + 0.5D, rand.nextGaussian() * 0.25F, rand.nextGaussian() * 0.75F, rand.nextGaussian() * 0.25F);
             particle.setColor(r, g, b);
+            particle.setMaxAge(particle.getMaxAge() * 2);
         }
     }
 }

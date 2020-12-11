@@ -1,6 +1,7 @@
 package com.bytelaw.client;
 
 import com.bytelaw.ColorableBooksConfig;
+import com.bytelaw.common.ClientHandlers;
 import com.bytelaw.common.network.EditColorableBookMessage;
 import com.bytelaw.common.network.NetworkManager;
 import com.mojang.blaze3d.matrix.MatrixStack;

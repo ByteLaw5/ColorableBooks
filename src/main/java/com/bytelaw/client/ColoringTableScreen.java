@@ -9,7 +9,10 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
+@OnlyIn(Dist.CLIENT)
 public class ColoringTableScreen extends ContainerScreen<ColoringTableContainer> {
     private static final ResourceLocation TEXTURES = ColorableBooks.location("textures/coloring_table.png");
 
@@ -41,7 +44,7 @@ public class ColoringTableScreen extends ContainerScreen<ColoringTableContainer>
 
     @Override
     protected void drawGuiContainerForegroundLayer(MatrixStack matrixStack, int x, int y) {
-        titleX = 54;
+        titleX = 50;
         super.drawGuiContainerForegroundLayer(matrixStack, x, y);
     }
 }

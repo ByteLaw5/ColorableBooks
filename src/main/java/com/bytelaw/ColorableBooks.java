@@ -1,6 +1,6 @@
 package com.bytelaw;
 
-import com.bytelaw.client.ClientHandlers;
+import com.bytelaw.common.ClientHandlers;
 import com.bytelaw.common.network.NetworkManager;
 import com.bytelaw.common.registry.*;
 import mcp.MethodsReturnNonnullByDefault;
