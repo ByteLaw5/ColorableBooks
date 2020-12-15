@@ -13,7 +13,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '1.0'
+version = '0.1A'
 group = 'com.bytelaw.colorablebooks' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'colorablebooks'
 
@@ -136,7 +136,7 @@ jar {
         attributes([
             "Specification-Title": "colorablebooks",
             "Specification-Vendor": "ByteLaw",
-            "Specification-Version": "1.0",
+            "Specification-Version": "0.1",
             "Implementation-Title": project.name,
             "Implementation-Version": "${version}",
             "Implementation-Vendor" :"ByteLaw",

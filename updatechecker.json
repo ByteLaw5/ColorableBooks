@@ -1,10 +1,10 @@
 {
     "homepage": "https://github.com/ByteLaw5/ColorableBooks",
     "1.16.4": {
-        "1.0:": "Initial Version"
+        "0.1A": "Initial Version"
     },
     "promos": {
-        "1.16.4-latest": "1.0",
-        "1.16.4-recommended": "1.0"
+        "1.16.4-latest": "0.1A",
+        "1.16.4-recommended": "0.1A"
     }
 }
