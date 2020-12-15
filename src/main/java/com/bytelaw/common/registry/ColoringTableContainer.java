@@ -18,20 +18,11 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
 import javax.annotation.Nonnull;
 import java.util.AbstractList;
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.Set;
-import java.util.function.BiConsumer;
-import java.util.function.BinaryOperator;
-import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.stream.Collector;
 
 public class ColoringTableContainer extends Container {
@@ -55,7 +46,7 @@ public class ColoringTableContainer extends Container {
                 getTile().setColor(value);
             }
         });
-        items().ifPresent(handler -> {
+        getTile().getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(handler -> {
             addSlot(new SlotItemHandler(handler, 0, 27, 47) {
                 @Override
                 public void onSlotChanged() {
@@ -134,10 +125,6 @@ public class ColoringTableContainer extends Container {
             return (ColoringTableTile)te;
         }
         return null; //Almost never unlikely to ever happen
-    }
-
-    private LazyOptional<IItemHandler> items() {
-        return getTile().getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
     }
 
     @Override
@@ -299,35 +286,10 @@ public class ColoringTableContainer extends Container {
     }
 
     private static Collector<StringNBT, ListNBT, ListNBT> toListNBT() {
-        return new Collector<StringNBT, ListNBT, ListNBT>() {
-            @Override
-            public Supplier<ListNBT> supplier() {
-                return ListNBT::new;
-            }
-
-            @Override
-            public BiConsumer<ListNBT, StringNBT> accumulator() {
-                return AbstractList::add;
-            }
-
-            @Override
-            public BinaryOperator<ListNBT> combiner() {
-                return (list1, list2) -> {
-                    list1.addAll(list2);
-                    return list1;
-                };
-            }
-
-            @Override
-            public Function<ListNBT, ListNBT> finisher() {
-                return Function.identity();
-            }
-
-            @Override
-            public Set<Characteristics> characteristics() {
-                return Collections.unmodifiableSet(EnumSet.of(Characteristics.IDENTITY_FINISH));
-            }
-        };
+        return Collector.of(ListNBT::new, AbstractList::add, (list1, list2) -> {
+            list1.addAll(list2);
+            return list1;
+        });
     }
 
     public int getColor() {

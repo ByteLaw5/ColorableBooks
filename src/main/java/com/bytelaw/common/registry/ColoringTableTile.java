@@ -7,6 +7,8 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IWorldPosCallable;
 import net.minecraft.util.text.IFormattableTextComponent;
@@ -114,5 +116,22 @@ public class ColoringTableTile extends TileEntity implements INamedContainerProv
     public void spawnColorParticles() {
         if(world.isRemote)
             ClientHandlers.spawnColorParticles(getPos(), getColor() / 10);
+    }
+
+    @Override
+    public CompoundNBT getUpdateTag() {
+        return write(new CompoundNBT());
+    }
+
+    @Nullable
+    @Override
+    public SUpdateTileEntityPacket getUpdatePacket() {
+        return new SUpdateTileEntityPacket(getPos(), -1, getUpdateTag());
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
+        CompoundNBT nbt = pkt.getNbtCompound();
+        read(ClientHandlers.getClientBlockstate(pkt.getPos()), nbt);
     }
 }
