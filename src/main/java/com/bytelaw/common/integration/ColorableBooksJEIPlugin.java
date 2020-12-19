@@ -22,6 +22,8 @@ import java.util.List;
 
 @JeiPlugin
 public class ColorableBooksJEIPlugin implements IModPlugin {
+    public static final ResourceLocation UID = ColorableBooks.location("jei_plugin");
+
     public ColoringTableCategory coloringTable;
 
     @Override
@@ -95,6 +97,6 @@ public class ColorableBooksJEIPlugin implements IModPlugin {
 
     @Override
     public ResourceLocation getPluginUid() {
-        return ColorableBooks.location("jei_plugin");
+        return UID;
     }
 }
