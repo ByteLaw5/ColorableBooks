@@ -8,6 +8,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.particle.Particle;
+import net.minecraft.client.settings.ParticleStatus;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.Hand;
@@ -58,14 +59,16 @@ public final class ClientHandlers {
     public static void spawnColorParticles(BlockPos pos, int multiplier) {
         if(isOnServer())
             return;
-        Random rand = new Random();
-        for(int i = 0; i < (10 * multiplier); i++) {
-            float r = rand.nextFloat() * 2.F / (rand.nextFloat() * 1.25F) + rand.nextInt(155);
-            float g = rand.nextFloat() * 2.F / (rand.nextFloat() * 1.25F) + rand.nextInt(155);
-            float b = rand.nextFloat() * 2.F / (rand.nextFloat() * 1.25F) + rand.nextInt(155);
-            Particle particle = MINECRAFT.particles.addParticle(ParticleTypes.EFFECT, pos.getX() + 0.5D, pos.getY() + 0.75D, pos.getZ() + 0.5D, rand.nextGaussian() * 0.25F, rand.nextGaussian() * 0.75F, rand.nextGaussian() * 0.25F);
-            particle.setColor(r, g, b);
-            particle.setMaxAge(particle.getMaxAge() * 2);
+        if(MINECRAFT.gameSettings.particles != ParticleStatus.MINIMAL) {
+            Random rand = new Random();
+            for(int i = 0; i < (10 * multiplier); i++) {
+                float r = rand.nextFloat() * 2.F / (rand.nextFloat() * 1.25F) + rand.nextInt(155);
+                float g = rand.nextFloat() * 2.F / (rand.nextFloat() * 1.25F) + rand.nextInt(155);
+                float b = rand.nextFloat() * 2.F / (rand.nextFloat() * 1.25F) + rand.nextInt(155);
+                Particle particle = MINECRAFT.particles.addParticle(ParticleTypes.EFFECT, pos.getX() + 0.5D, pos.getY() + 0.75D, pos.getZ() + 0.5D, rand.nextGaussian() * 0.25F, rand.nextGaussian() * 0.75F, rand.nextGaussian() * 0.25F);
+                particle.setColor(r, g, b);
+                particle.setMaxAge(particle.getMaxAge() * 2);
+            }
         }
     }
 

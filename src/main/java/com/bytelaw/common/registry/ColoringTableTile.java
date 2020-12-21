@@ -63,7 +63,7 @@ public class ColoringTableTile extends TileEntity implements INamedContainerProv
     }
 
     public void readLight(CompoundNBT nbt) {
-        setColor(nbt.getInt("Color"));
+        setColor(nbt.getInt("Color"), false);
     }
 
     @Override
@@ -104,9 +104,10 @@ public class ColoringTableTile extends TileEntity implements INamedContainerProv
         handler.invalidate();
     }
 
-    public void setColor(int color) {
+    public void setColor(int color, boolean dirty) {
         this.color = color;
-        markDirty();
+        if(dirty)
+            markDirty();
     }
 
     public int getColor() {

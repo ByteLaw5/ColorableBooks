@@ -43,7 +43,7 @@ public class ColoringTableContainer extends Container {
 
             @Override
             public void set(int value) {
-                getTile().setColor(value);
+                getTile().setColor(value, true);
             }
         });
         getTile().getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(handler -> {
@@ -97,7 +97,7 @@ public class ColoringTableContainer extends Container {
                     s.shrink(1);
                     getSlot(1).putStack(s);
                     getTile().spawnColorParticles();
-                    getTile().setColor(MathHelper.clamp(getColor() - 10, 0, 100));
+                    getTile().setColor(MathHelper.clamp(getColor() - 10, 0, 100), true);
                     return super.onTake(thePlayer, stack);
                 }
 
@@ -280,7 +280,7 @@ public class ColoringTableContainer extends Container {
     private void addColor() {
         int toAdd = 10;
         if(getColor() < 100) {
-            getTile().setColor(toAdd + getColor());
+            getTile().setColor(toAdd + getColor(), true);
             onSlotChange();
         }
     }
