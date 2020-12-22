@@ -3,10 +3,13 @@ package com.bytelaw;
 import com.bytelaw.common.ClientHandlers;
 import com.bytelaw.common.network.NetworkManager;
 import com.bytelaw.common.registry.*;
+import com.bytelaw.datagen.LootTables;
+import com.bytelaw.datagen.Recipes;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.data.DataGenerator;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -25,6 +28,7 @@ import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 import javax.annotation.Nonnull;
@@ -43,7 +47,14 @@ public class ColorableBooks {
         bus.addGenericListener(Block.class, this::registerBlock);
         bus.addGenericListener(TileEntityType.class, this::registerTile);
         bus.addGenericListener(ContainerType.class, this::registerContainer);
+        bus.addListener(this::gatherData);
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> bus.addListener(this::clientSetup));
+    }
+
+    private void gatherData(GatherDataEvent event) {
+        DataGenerator gen = event.getGenerator();
+        gen.addProvider(Recipes.INSTANCE.apply(gen));
+        gen.addProvider(LootTables.INSTANCE.apply(gen));
     }
 
     private void clientSetup(FMLClientSetupEvent event) {

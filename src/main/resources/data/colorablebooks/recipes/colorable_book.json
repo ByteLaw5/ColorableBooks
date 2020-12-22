@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:writable_book"
+    },
+    {
+      "tag": "forge:dyes"
+    },
+    {
+      "tag": "forge:dyes"
+    },
+    {
+      "tag": "forge:dyes"
+    }
+  ],
+  "result": {
+    "item": "colorablebooks:colorable_book"
+  }
+}

@@ -1,19 +1,20 @@
 {
-    "type": "minecraft:block",
-    "pools": [
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "name": "coloring_table",
+      "rolls": 1,
+      "entries": [
         {
-            "rolls": 1,
-            "entries": [
-                {
-                    "type": "minecraft:item",
-                    "name": "colorablebooks:coloring_table"
-                }
-            ],
-            "conditions": [
-                {
-                    "condition": "minecraft:survives_explosion"
-                }
-            ]
+          "type": "minecraft:item",
+          "name": "colorablebooks:coloring_table"
         }
-    ]
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ]
+    }
+  ]
 }
