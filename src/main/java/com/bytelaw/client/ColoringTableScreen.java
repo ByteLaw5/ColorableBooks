@@ -21,6 +21,12 @@ public class ColoringTableScreen extends ContainerScreen<ColoringTableContainer>
     }
 
     @Override
+    protected void init() {
+        super.init();
+        this.titleX = (xSize / 2) - (font.getStringPropertyWidth(title) / 2);
+    }
+
+    @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         renderBackground(matrixStack);
         super.render(matrixStack, mouseX, mouseY, partialTicks);
@@ -40,11 +46,5 @@ public class ColoringTableScreen extends ContainerScreen<ColoringTableContainer>
         blit(matrixStack, i, j, 0, 0, xSize, ySize);
         int l = container.getColor();
         blit(matrixStack, i + 19, j + 38, 176, 0, l * 68 / 100, 3);
-    }
-
-    @Override
-    protected void drawGuiContainerForegroundLayer(MatrixStack matrixStack, int x, int y) {
-        titleX = 50;
-        super.drawGuiContainerForegroundLayer(matrixStack, x, y);
     }
 }

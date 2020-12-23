@@ -8,6 +8,7 @@ import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.INBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.nbt.StringNBT;
 import net.minecraft.tileentity.TileEntity;
@@ -70,12 +71,18 @@ public class ColoringTableContainer extends Container {
                 }
             });
             addSlot(new SlotItemHandler(handler, 1, 19, 18) {
+                private boolean addColor = true;
+
                 @Override
                 public void onSlotChanged() {
                     super.onSlotChanged();
-                    if(getHasStack()) {
+                    if(getHasStack() && addColor) {
                         addColor();
-                        getStack().shrink(1);
+                        addColor = false;
+                        ItemStack copy = getStack().copy();
+                        copy.shrink(1);
+                        putStack(copy);
+                        addColor = true;
                     }
                 }
 
@@ -285,7 +292,7 @@ public class ColoringTableContainer extends Container {
         }
     }
 
-    private static Collector<StringNBT, ListNBT, ListNBT> toListNBT() {
+    private static <T extends INBT> Collector<T, ListNBT, ListNBT> toListNBT() {
         return Collector.of(ListNBT::new, AbstractList::add, (list1, list2) -> {
             list1.addAll(list2);
             return list1;
