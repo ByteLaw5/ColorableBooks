@@ -70,7 +70,32 @@ public class ColoringTableContainer extends Container {
                     return getSlotStackLimit();
                 }
             });
-            addSlot(new DyeSlot(this, handler, 1, 19, 18));
+            addSlot(new SlotItemHandler(handler, 1, 19, 18) {
+                private boolean addColor = true;
+
+                @Override
+                public void onSlotChanged() {
+                    super.onSlotChanged();
+                    if(getHasStack() && addColor) {
+                        addColor();
+                        addColor = false;
+                        ItemStack copy = getStack().copy();
+                        copy.shrink(1);
+                        putStack(copy);
+                        addColor = true;
+                    }
+                }
+
+                @Override
+                public boolean isItemValid(@Nonnull ItemStack stack) {
+                    return Tags.Items.DYES.contains(stack.getItem());
+                }
+
+                @Override
+                public int getSlotStackLimit() {
+                    return 1;
+                }
+            });
             addSlot(new SlotItemHandler(handler, 2, 134, 47) {
                 @Override
                 public ItemStack onTake(PlayerEntity thePlayer, ItemStack stack) {
@@ -106,7 +131,7 @@ public class ColoringTableContainer extends Container {
         if(te instanceof ColoringTableTile) {
             return (ColoringTableTile)te;
         }
-        return null; //Almost never likely to ever happen
+        return null; //Almost never unlikely to ever happen
     }
 
     @Override
@@ -259,7 +284,7 @@ public class ColoringTableContainer extends Container {
             getSlot(2).putStack(ItemStack.EMPTY);
     }
 
-    public void addColor() {
+    private void addColor() {
         int toAdd = 10;
         if(getColor() < 100) {
             getTile().setColor(toAdd + getColor(), true);
