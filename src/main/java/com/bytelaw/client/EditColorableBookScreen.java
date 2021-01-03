@@ -14,12 +14,9 @@ import net.minecraft.nbt.StringNBT;
 import net.minecraft.util.Hand;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.Locale;
 
-@OnlyIn(Dist.CLIENT)
 public class EditColorableBookScreen extends EditBookScreen {
     public EditColorableBookScreen(PlayerEntity player, ItemStack bookIn, Hand handIn) {
         super(player, bookIn, handIn);

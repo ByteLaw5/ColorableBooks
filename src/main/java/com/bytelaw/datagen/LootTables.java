@@ -50,7 +50,7 @@ public class LootTables implements IDataProvider {
     }
 
     private void addTables() {
-        add(RegistryList.coloring_table);
+        add(RegistryList.coloring_table.get());
     }
 
     private void add(Block block) {

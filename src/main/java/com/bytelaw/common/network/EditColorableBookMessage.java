@@ -56,7 +56,7 @@ public class EditColorableBookMessage {
 
     public void handle(Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
-            if(book.getItem() == RegistryList.colorable_book) {
+            if(book.getItem() == RegistryList.colorable_book.get()) {
                 CompoundNBT compoundnbt = book.getTag();
                 if(WritableBookItem.isNBTValid(compoundnbt)) {
                     List<String> list = Lists.newArrayList();
@@ -81,7 +81,7 @@ public class EditColorableBookMessage {
 
     private void replaceBookWithWritten(ServerPlayerEntity player, @Nullable String title, List<String> list, int invIndex) {
         ItemStack itemstack = player.inventory.getStackInSlot(invIndex);
-        if (itemstack.getItem() == RegistryList.colorable_book) {
+        if (itemstack.getItem() == RegistryList.colorable_book.get()) {
             if(updateAll) {
                 ItemStack itemstack1 = new ItemStack(Items.WRITTEN_BOOK);
                 CompoundNBT compoundnbt = itemstack.getTag();

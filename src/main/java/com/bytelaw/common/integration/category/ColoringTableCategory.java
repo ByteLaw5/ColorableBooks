@@ -31,7 +31,7 @@ public class ColoringTableCategory implements IRecipeCategory<ColoringTableRecip
     public ColoringTableCategory(IGuiHelper helpers) {
         ResourceLocation loc = ColorableBooks.location("textures/jei_textures.png");
         this.background = helpers.createDrawable(loc, 0, 0, 128, 32);
-        this.icon = helpers.createDrawableIngredient(new ItemStack(RegistryList.coloring_table));
+        this.icon = helpers.createDrawableIngredient(new ItemStack(RegistryList.coloring_table.get()));
         this.localizedName = I18n.format("colorablebooks.coloring_table.name");
         this.cachedColors = CacheBuilder.newBuilder().maximumSize(2L).build(new CacheLoader<Integer, IDrawable>() {
             @Override

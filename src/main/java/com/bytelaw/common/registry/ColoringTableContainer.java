@@ -32,7 +32,7 @@ public class ColoringTableContainer extends Container {
     private final BlockPos pos;
 
     public ColoringTableContainer(int id, PlayerInventory playerInventory, BlockPos pos, IWorldPosCallable callable) {
-        super(RegistryList.coloring_table_container, id);
+        super(RegistryList.coloring_table_container.get(), id);
         this.callable = callable;
         this.playerInventory = playerInventory;
         this.pos = pos;
@@ -136,7 +136,7 @@ public class ColoringTableContainer extends Container {
 
     @Override
     public boolean canInteractWith(PlayerEntity playerIn) {
-        return isWithinUsableDistance(callable, playerIn, RegistryList.coloring_table);
+        return isWithinUsableDistance(callable, playerIn, RegistryList.coloring_table.get());
     }
 
     @Override
@@ -262,7 +262,7 @@ public class ColoringTableContainer extends Container {
 
     private void onSlotChange() {
         if(getSlot(0).getHasStack()) {
-            ItemStack result = new ItemStack(getColor() >= 10 ? RegistryList.colorable_book : Items.WRITABLE_BOOK);
+            ItemStack result = new ItemStack(getColor() >= 10 ? RegistryList.colorable_book.get() : Items.WRITABLE_BOOK);
             ItemStack book = getSlot(0).getStack();
             if(book.hasTag()) {
                 CompoundNBT nbt = book.getTag();
@@ -270,10 +270,10 @@ public class ColoringTableContainer extends Container {
                     ListNBT listNBTresult = nbt.getList("pages", Constants.NBT.TAG_STRING).copy();
                     if(book.getItem() == Items.WRITTEN_BOOK)
                         if(nbt.contains("colorable", Constants.NBT.TAG_BYTE))
-                            listNBTresult = listNBTresult.stream().map(stringnbt -> ITextComponent.Serializer.getComponentFromJson(stringnbt.getString()).getString()).map(string -> ClientHandlers.updateFormattingCodesForString(string, false))
+                            listNBTresult = listNBTresult.stream().map(ColoringTableContainer::unwrapAndDeserialize).map(string -> ClientHandlers.updateFormattingCodesForString(string, false))
                                     .map(StringNBT::valueOf).collect(toListNBT());
                         else
-                            listNBTresult = listNBTresult.stream().map(stringnbt -> ITextComponent.Serializer.getComponentFromJson(stringnbt.getString()).getString())
+                            listNBTresult = listNBTresult.stream().map(ColoringTableContainer::unwrapAndDeserialize)
                                     .map(StringNBT::valueOf).collect(toListNBT());
                     result.setTagInfo("pages", listNBTresult.copy());
                 }
@@ -290,6 +290,10 @@ public class ColoringTableContainer extends Container {
             getTile().setColor(toAdd + getColor(), true);
             onSlotChange();
         }
+    }
+
+    private static String unwrapAndDeserialize(INBT nbt) {
+        return ITextComponent.Serializer.getComponentFromJson(nbt.getString()).getString();
     }
 
     private static <T extends INBT> Collector<T, ListNBT, ListNBT> toListNBT() {

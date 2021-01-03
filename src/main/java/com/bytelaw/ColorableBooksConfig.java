@@ -14,7 +14,7 @@ public final class ColorableBooksConfig {
         public static ForgeConfigSpec.BooleanValue SHOW_COLOR_LIST;
 
         private static ForgeConfigSpec setupValues(ForgeConfigSpec.Builder builder) {
-            SHOW_COLOR_LIST = builder.comment("True if show color code list in the edit screen.").define("showColorList", true);
+            SHOW_COLOR_LIST = builder.comment("True if show color code list in the colorable book editing screen.").translation("colorablebooks.showcolorlist").define("showColorList", true);
             return builder.build();
         }
     }
