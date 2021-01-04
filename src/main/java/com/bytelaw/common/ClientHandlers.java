@@ -14,6 +14,7 @@ import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 
@@ -36,7 +37,7 @@ public final class ClientHandlers {
         MINECRAFT.displayGuiScreen(new EditColorableBookScreen(MINECRAFT.player, stack, hand));
     }
 
-    public static void registerScreens(FMLClientSetupEvent event) {
+    public static void onClientSetup(FMLClientSetupEvent event) {
         event.enqueueWork(() -> ScreenManager.registerFactory(RegistryList.coloring_table_container.get(), ColoringTableScreen::new));
     }
 
@@ -68,6 +69,10 @@ public final class ClientHandlers {
                 particle.setMaxAge(particle.getMaxAge() * 2);
             }
         }
+    }
+
+    public static void handleExplosion(double motionX, double motionY, double motionZ) {
+        MINECRAFT.player.setMotion(MINECRAFT.player.getMotion().add(motionX, motionY, motionZ));
     }
 
     public static BlockState getClientBlockstate(BlockPos pos) {

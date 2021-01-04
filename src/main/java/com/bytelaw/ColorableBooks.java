@@ -46,7 +46,7 @@ public class ColorableBooks {
     }
 
     private void clientSetup(FMLClientSetupEvent event) {
-        ClientHandlers.registerScreens(event);
+        ClientHandlers.onClientSetup(event);
     }
 
     @Nonnull
