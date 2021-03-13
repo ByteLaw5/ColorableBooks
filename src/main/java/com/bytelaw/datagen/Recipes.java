@@ -18,14 +18,15 @@ public class Recipes extends RecipeProvider {
 
     @Override
     protected void registerRecipes(Consumer<IFinishedRecipe> consumer) {
-        ShapelessRecipeBuilder.shapelessRecipe(RegistryList.colorable_book.get())
+        ShapelessRecipeBuilder
+                .shapelessRecipe(RegistryList.colorable_book)
                 .addIngredient(Items.WRITABLE_BOOK)
                 .addIngredient(Tags.Items.DYES)
                 .addIngredient(Tags.Items.DYES)
                 .addIngredient(Tags.Items.DYES)
                 .addCriterion("hasItem", hasItem(Items.WRITABLE_BOOK))
                 .build(consumer);
-        ShapedRecipeBuilder.shapedRecipe(RegistryList.coloring_table_item.get())
+        ShapedRecipeBuilder.shapedRecipe(RegistryList.coloring_table_item)
                 .patternLine("!$$")
                 .patternLine("###")
                 .patternLine("@ @")

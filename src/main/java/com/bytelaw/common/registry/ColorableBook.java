@@ -27,7 +27,7 @@ public class ColorableBook extends WritableBookItem {
     public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
         ItemStack stack = playerIn.getHeldItem(handIn);
         if(!worldIn.isRemote) {
-            if(stack.getItem() == RegistryList.colorable_book.get())
+            if(stack.getItem() == RegistryList.colorable_book)
                 NetworkManager.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity)playerIn), new OpenBookMessage(stack, handIn));
         }
         return ActionResult.resultSuccess(stack);

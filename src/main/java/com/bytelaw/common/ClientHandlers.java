@@ -14,8 +14,6 @@ import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 
 import java.util.Random;
@@ -37,22 +35,25 @@ public final class ClientHandlers {
         MINECRAFT.displayGuiScreen(new EditColorableBookScreen(MINECRAFT.player, stack, hand));
     }
 
-    public static void onClientSetup(FMLClientSetupEvent event) {
-        event.enqueueWork(() -> ScreenManager.registerFactory(RegistryList.coloring_table_container.get(), ColoringTableScreen::new));
+    public static void registerScreens() {
+        if(isOnServer())
+            return;
+        ScreenManager.registerFactory(RegistryList.coloring_table_container, ColoringTableScreen::new);
     }
 
     public static String updateFormattingCodesForString(String string, boolean andToSection) {
-        final char[] chars = string.toCharArray();
-        StringBuilder result = new StringBuilder();
+        char[] chars = new char[string.length()];
+        string.getChars(0, string.length(), chars, 0);
         for(int j = 0; j < chars.length; j++) {
-            result.setCharAt(j, chars[j]);
             if(chars[j] == (andToSection ? '&' : '\u00a7')) {
                 if(j + 1 != chars.length && TextFormatting.fromFormattingCode(chars[j + 1]) != null) {
-                    result.setCharAt(j, (andToSection ? '\u00a7' : '&'));
+                    StringBuilder b = new StringBuilder(string);
+                    b.setCharAt(j, (andToSection ? '\u00a7' : '&'));
+                    string = b.toString();
                 }
             }
         }
-        return result.toString();
+        return string;
     }
 
     public static void spawnColorParticles(BlockPos pos, int multiplier) {
@@ -60,7 +61,7 @@ public final class ClientHandlers {
             return;
         if(MINECRAFT.gameSettings.particles != ParticleStatus.MINIMAL) {
             Random rand = new Random();
-            for (int i = 0; i < (10 * multiplier); i++) {
+            for(int i = 0; i < (10 * multiplier); i++) {
                 float r = rand.nextFloat() * 2.F / (rand.nextFloat() * 1.25F) + rand.nextInt(155);
                 float g = rand.nextFloat() * 2.F / (rand.nextFloat() * 1.25F) + rand.nextInt(155);
                 float b = rand.nextFloat() * 2.F / (rand.nextFloat() * 1.25F) + rand.nextInt(155);
@@ -69,10 +70,6 @@ public final class ClientHandlers {
                 particle.setMaxAge(particle.getMaxAge() * 2);
             }
         }
-    }
-
-    public static void handleExplosion(double motionX, double motionY, double motionZ) {
-        MINECRAFT.player.setMotion(MINECRAFT.player.getMotion().add(motionX, motionY, motionZ));
     }
 
     public static BlockState getClientBlockstate(BlockPos pos) {

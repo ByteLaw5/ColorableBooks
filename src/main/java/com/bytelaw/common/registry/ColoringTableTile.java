@@ -29,7 +29,7 @@ public class ColoringTableTile extends TileEntity implements INamedContainerProv
     private IFormattableTextComponent customName;
 
     public ColoringTableTile() {
-        super(RegistryList.coloring_table_te.get());
+        super(RegistryList.coloring_table_te);
     }
 
     @Override

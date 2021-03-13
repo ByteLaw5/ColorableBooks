@@ -44,7 +44,7 @@ public class ColorableBooksJEIPlugin implements IModPlugin {
         List<ColoringTableRecipe> recipes = Lists.newArrayList();
         for(int i = 0; i < 2; i++) {
             for(int j = 0; j < 2; j++) {
-                recipes.add(new ColoringTableRecipe(new ItemStack(i == 0 ? Items.WRITABLE_BOOK : Items.WRITTEN_BOOK), new ItemStack(j == 0 ? RegistryList.colorable_book.get() : Items.WRITABLE_BOOK), j == 0 ? 10 : 0));
+                recipes.add(new ColoringTableRecipe(new ItemStack(i == 0 ? Items.WRITABLE_BOOK : Items.WRITTEN_BOOK), new ItemStack(j == 0 ? RegistryList.colorable_book : Items.WRITABLE_BOOK), j == 0 ? 10 : 0));
             }
         }
         registration.addRecipes(recipes, coloringTable.getUid());
@@ -52,7 +52,7 @@ public class ColorableBooksJEIPlugin implements IModPlugin {
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
-        registration.addRecipeCatalyst(new ItemStack(RegistryList.coloring_table.get()), ColoringTableCategory.COLORING_TABLE);
+        registration.addRecipeCatalyst(new ItemStack(RegistryList.coloring_table), ColoringTableCategory.COLORING_TABLE);
     }
 
     @Override
